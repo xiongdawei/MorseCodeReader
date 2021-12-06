@@ -1,6 +1,6 @@
 # MorseCodeReader
 CS233FP
 
-vscode://vscode.github-authentication/did-authenticate?windowid=1&code=39f1476b5bf9ae69ee2e&state=3bc810d8-ac58-4112-96b1-9262c1c438fc
+https://prod.liveshare.vsengsaas.visualstudio.com/join?78FFDD1B9696929A243D770D8B5E7965AD19
 
 vscode share link

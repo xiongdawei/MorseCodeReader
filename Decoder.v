@@ -8,7 +8,7 @@ module decoder(
 reg [1:0] prev_sw;
 reg [4:0] temp_morse;
 
-integer i = 4;
+integer i = 5;
 
 always @(posedge clk) begin
     if(sw[0] != prev_sw[0]) begin
@@ -23,7 +23,7 @@ always @(posedge clk) begin
     end
     if(i == 0) begin
         morse = temp_morse;
-        i = 4;
+        i = 5;
     end
 end
 

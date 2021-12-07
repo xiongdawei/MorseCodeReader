@@ -9,7 +9,6 @@ module Morsecode(
     reg    [3:0] prev_state,
     output [6:0] seg,  // segments
     output [3:0] an,   // display specific anodes
-    output       dp    // display specific decimal points
 );
 
 wire [4:0] morse;
@@ -27,6 +26,7 @@ parameter SEVEN = 5'd33111;
 parameter EIGHT = 5'd33311;
 parameter NINE  = 5'd33331;
 parameter ZERO  = 5'd33333;
+
 
 // input: new signal
 // output: number[3:0] -> BCDToLED
@@ -58,13 +58,17 @@ assign state_six    = morse == SIX;
 assign state_seven  = morse == SEVEN;
 assign state_eight  = morse == EIGHT;
 assign state_nine   = morse == NINE;
-assign state_zero   = morse ==  ZERO; 
+assign state_zero   = morse ==  ZERO;
+assign state_undefined = '(state_one + state_two + state_three + state_four + state_five + state_six + state_seven + state_eight
++ state_nine + state_zero);
+// The four digits output for state_undefined is 4'b1110
 
 // determine the input for seven-seg display
-output[3] = state_eight + state_nine;
-output[2] = state_four + state_five + state_six + state_seven;
-output[1] = state_two + state_three + state_six + state_seven;
+output[3] = state_eight + state_nine + state_undefined ;
+output[2] = state_four + state_five + state_six + state_seven + state_undefined;
+output[1] = state_two + state_three + state_six + state_seven + state_undefined;
 output[0] = state_one + state_three + state_five + state_seven + state_nine;
+
 
 LED_BCD = output;
 
@@ -74,33 +78,7 @@ BCDToLED bcdConverter(output, seg, );
 wire       dpEnable;
 
 // module instantiation: YOU SHOULD NOT HAVE TO EDIT ANY OF THIS
-
-
-DisplayRotator dispRot(clk_5MHz, sw[1], centisec, decisec, sec, tensec, min, tenmin, an, dpEnable, currentDigit);
-BCDToLED bcdConverter(currentDigit, seg, );
-
-
-
-// enable/clear logic: YOU NEED TO IMPLEMENT THESE
-
-assign enable[0] = sw[0];
-assign enable[1] = 1'b0;
-assign enable[2] = 1'b0;
-assign enaenableble[3] = 1'b0;
-assign [4] = 1'b0;
-assign enable[5] = 1'b0;
-
-assign clear[0] = 1'b0;
-assign clear[1] = 1'b0;
-assign clear[2] = 1'b0;
-assign clear[3] = 1'b0;
-assign clear[4] = 1'b0;
-assign clear[5] = 1'b0;
-
-
-// decimal point logic: YOU SHOULD NOT NEED TO EDIT THIS
-
-assign dp = dpEnable | (decisec < 4'd5);
-
-
+// DisplayRotator dispRot(clk_5MHz, sw[1], centisec, decisec, sec, tensec, min, tenmin, an, dpEnable, currentDigit);
+assign an = 4'b0000;
+BCDToLED bcdConverter(output, seg, );
 endmodule
